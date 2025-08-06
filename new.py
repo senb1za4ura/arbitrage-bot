@@ -28,24 +28,34 @@ MEXC_API_SECRET = os.getenv("MEXC_API_SECRET")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
-# Примеры инициализации клиентов
-kucoin = KucoinMarket(key=KUCOIN_API_KEY, secret=KUCOIN_API_SECRET, passphrase=KUCOIN_PASSPHRASE)
-bybit = BybitClient(api_key=BYBIT_API_KEY, api_secret=BYBIT_API_SECRET)
+# Инициализация клиентов
+kucoin = KucoinMarket()
+
+bybit = BybitClient(
+    api_key=BYBIT_API_KEY,
+    api_secret=BYBIT_API_SECRET
+)
 
 gate_conf = GateConfiguration()
 gate_conf.key = GATE_API_KEY
 gate_conf.secret = GATE_API_SECRET
 gate = SpotApi(configuration=gate_conf)
 
-mexc = MEXCClient(api_key=MEXC_API_KEY, api_secret=MEXC_API_SECRET)
+mexc = MEXCClient(
+    api_key=MEXC_API_KEY,
+    api_secret=MEXC_API_SECRET
+)
 
 bot = Bot(token=TELEGRAM_TOKEN)
 
-# Пример функции отправки сообщения
+# Функция отправки сообщений
 def send_message(message):
-    bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+    try:
+        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+    except Exception as e:
+        print(f"Ошибка при отправке сообщения: {e}")
 
-# Пример запуска
+# Основной цикл
 if __name__ == "__main__":
     send_message("✅ Бот успешно запущен!")
 
